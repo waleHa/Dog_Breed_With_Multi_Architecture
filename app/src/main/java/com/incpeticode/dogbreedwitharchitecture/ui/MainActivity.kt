@@ -1,4 +1,4 @@
-package com.incpeticode.dogbreedwitharchitecture
+package com.incpeticode.dogbreedwitharchitecture.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
