@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -54,75 +55,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DogBreedWithArchitectureTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DogBreedScreen(modifier = Modifier.padding(innerPadding))
-                }
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = { RandomImageTopBar() },
+                    content = { innerPadding ->
+                        DogBreedScreen(modifier = Modifier.padding(innerPadding))
+                    }
+                )
             }
         }
     }
-}
-
-@Composable
-fun DogBreedScreen(viewModel: DogViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
-    val breedList by viewModel.breedList.observeAsState()
-    val randomImage by viewModel.randomImage.observeAsState()
-    val isLoading by viewModel.isLoading.observeAsState(false)
-
-    Column(
-        modifier = modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (isLoading) {
-            CircularProgressIndicator()
-        } else {
-            breedList?.let { breeds ->
-                LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(breeds.breeds.keys.toList()) { breed ->
-                        BreedItem(breed = breed, onClick = { viewModel.fetchRandomImageByBreed(breed) })
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                randomImage?.let { image ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .padding(16.dp),
-                        elevation = CardDefaults.cardElevation(8.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.LightGray),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(image.imageUrl),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun BreedItem(breed: String, onClick: () -> Unit) {
-    Text(
-        text = breed,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable(onClick = onClick)
-    )
 }
 
 @Preview(showBackground = true)
