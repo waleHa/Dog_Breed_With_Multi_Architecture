@@ -18,11 +18,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.incpeticode.dogbreedwitharchitecture.ui.presenter.DogPresenter
 
 @Composable
-fun RandomImageTopBar(viewModel: DogViewModel = hiltViewModel()) {
-    val randomImage by viewModel.randomImage.collectAsState()
-
+fun RandomImageTopBar(imageUrl: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,7 +35,7 @@ fun RandomImageTopBar(viewModel: DogViewModel = hiltViewModel()) {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = rememberAsyncImagePainter(randomImage.imageUrl),
+                painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

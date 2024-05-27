@@ -1,5 +1,6 @@
-package com.incpeticode.dogbreedwitharchitecture.data.remote
+package com.incpeticode.dogbreedwitharchitecture.data.di
 
+import com.incpeticode.dogbreedwitharchitecture.data.remote.DogBreedApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

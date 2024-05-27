@@ -33,6 +33,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,32 +46,60 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.incpeticode.dogbreedwitharchitecture.data.util.Constants
+import com.incpeticode.dogbreedwitharchitecture.ui.presenter.DogPresenter
+import com.incpeticode.dogbreedwitharchitecture.ui.presenter.DogView
 import com.incpeticode.dogbreedwitharchitecture.ui.theme.DogBreedWithArchitectureTheme
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.migration.CustomInjection.inject
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(),DogView {
+
+    @Inject
+    lateinit var presenter: DogPresenter
+    private val breedList = mutableStateOf<Map<String, List<String>>?>(null)
+    private val randomImage = mutableStateOf(Constants.dogImageModelSample.imageUrl)
+    private val isLoading = mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        presenter.attachView(this)
         setContent {
             DogBreedWithArchitectureTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { RandomImageTopBar() },
+                    topBar = { RandomImageTopBar(randomImage.value) },
                     content = { innerPadding ->
-                        DogBreedScreen(modifier = Modifier.padding(innerPadding))
+                        DogBreedScreen(
+                            breedList.value,
+                            isLoading.value,
+                            { presenter.fetchRandomImageByBreed(it) },
+                            modifier = Modifier.padding(innerPadding)
+                        )
                     }
                 )
             }
         }
+        presenter.fetchAllBreeds()  // Call fetchAllBreeds only once here
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DogBreedScreenPreview() {
-    DogBreedWithArchitectureTheme {
-        DogBreedScreen()
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
+    override fun showBreeds(breeds: Map<String, List<String>>) {
+        breedList.value = breeds
+    }
+
+    override fun showRandomImage(imageUrl: String) {
+        randomImage.value = imageUrl
+    }
+
+    override fun setLoading(isLoading: Boolean) {
+        this.isLoading.value = isLoading
     }
 }
