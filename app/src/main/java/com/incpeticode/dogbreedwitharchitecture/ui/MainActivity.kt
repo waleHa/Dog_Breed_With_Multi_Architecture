@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 // Main activity implementing the DogView
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: DogViewModel by viewModels() // Get ViewModel instance
 
