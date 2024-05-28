@@ -21,22 +21,24 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
+// Main activity implementing the DogView
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: DogViewModel by viewModels()
+    private val viewModel: DogViewModel by viewModels() // Get ViewModel instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge() // Enable edge-to-edge display
 
         setContent {
-            val randomImage by viewModel.randomImage.collectAsState()
+            val randomImage by viewModel.randomImage.collectAsState() // Observe random image state
 
             DogBreedWithArchitectureTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { RandomImageTopBar(randomImage) },
+                    topBar = { RandomImageTopBar(randomImage) }, // Display top bar with random image
                     content = { innerPadding ->
-                        DogBreedScreen(modifier = Modifier.padding(innerPadding))
+                        DogBreedScreen(modifier = Modifier.padding(innerPadding)) // Display dog breed screen
                     }
                 )
             }
@@ -44,10 +46,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Preview function for the DogBreedScreen composable
 @Preview(showBackground = true)
 @Composable
 fun DogBreedScreenPreview() {
     DogBreedWithArchitectureTheme {
-        DogBreedScreen()
+        DogBreedScreen() // Display the dog breed screen in preview mode
     }
 }

@@ -19,27 +19,28 @@ import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogIntent
 import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogViewModel
 import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogViewState
 
+// Composable function to display the screen with the list of dog breeds
 @Composable
 fun DogBreedScreen(viewModel: DogViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
-    val viewState by viewModel.viewState.collectAsState()
+    val viewState by viewModel.viewState.collectAsState() // Observe the ViewState from the ViewModel
 
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.padding(16.dp), // Add padding around the column
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when (viewState) {
-            is DogViewState.Idle -> {
+            is DogViewState.Idle -> { // Initial state before any data is loaded
                 LaunchedEffect(Unit) {
-                    viewModel.intentChannel.send(DogIntent.FetchAllBreeds)
+                    viewModel.intentChannel.send(DogIntent.FetchAllBreeds) // Send intent to fetch all breeds
                 }
-                Text("Initializing...")
+                Text("Initializing...") // Show initializing text
             }
-            is DogViewState.Loading -> CircularProgressIndicator()
-            is DogViewState.BreedList -> {
-                val breeds = (viewState as DogViewState.BreedList).breeds
+            is DogViewState.Loading -> CircularProgressIndicator() // Show loading indicator
+            is DogViewState.BreedList -> { // State when the breed list is loaded
+                val breeds = (viewState as DogViewState.BreedList).breeds // Get the breeds from the ViewState
                 LazyColumn(
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1f) // Make the list take available space
                         .padding(bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -47,13 +48,13 @@ fun DogBreedScreen(viewModel: DogViewModel = hiltViewModel(), modifier: Modifier
                         BreedItem(
                             breed = breed,
                             onClick = {
-                                viewModel.intentChannel.trySend(DogIntent.FetchRandomImageByBreed(breed))
+                                viewModel.intentChannel.trySend(DogIntent.FetchRandomImageByBreed(breed)) // Send intent to fetch random image for the breed
                             })
                     }
                 }
             }
-            is DogViewState.Error -> Text("Error: ${(viewState as DogViewState.Error).message}")
-            else -> Unit
+            is DogViewState.Error -> Text("Error: ${(viewState as DogViewState.Error).message}") // Show error message
+            else -> Unit // Do nothing for other states
         }
     }
 }

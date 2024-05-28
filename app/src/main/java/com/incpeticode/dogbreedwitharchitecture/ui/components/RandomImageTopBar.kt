@@ -22,24 +22,25 @@ import com.incpeticode.dogbreedwitharchitecture.domain.model.DogImageModel
 import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogViewModel
 import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogViewState
 
+// Composable function to display the top bar with the random dog image
 @Composable
 fun RandomImageTopBar(randomImage: DogImageModel) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1.6f)
+            .fillMaxWidth() // Make the card take the full width
+            .aspectRatio(1.6f) // Set the aspect ratio
             .padding(8.dp),
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .background(Color.LightGray),
+                .fillMaxSize() // Make the box take the full size of the card
+                .background(Color.LightGray), // Set background color
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = rememberAsyncImagePainter(randomImage.imageUrl),
+                painter = rememberAsyncImagePainter(randomImage.imageUrl), // Load the image from the URL
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Crop, // Crop the image to fill the box
                 modifier = Modifier.fillMaxSize()
             )
         }
