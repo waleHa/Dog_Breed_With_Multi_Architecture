@@ -1,4 +1,4 @@
-package com.incpeticode.dogbreedwitharchitecture.ui
+package com.incpeticode.dogbreedwitharchitecture.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,15 +10,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Composable function to display a single breed item in the list
 @Composable
 fun BreedItem(breed: String, onClick: () -> Unit) {
     Text(
-        text = breed,
+        text = breed, // Display the breed name
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable(onClick = onClick)
+            .fillMaxWidth() // Make the item take the full width
+            .padding(8.dp) // Add padding around the item
+            .clickable(onClick = onClick) // Make the item clickable and trigger the provided onClick action
     )
 }
