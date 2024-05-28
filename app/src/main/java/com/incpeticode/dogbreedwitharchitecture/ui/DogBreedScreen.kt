@@ -14,27 +14,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+// Composable function to display the dog breed screen
 @Composable
-fun DogBreedScreen(viewModel: DogViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
-    val breedList by viewModel.breedList.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-
+fun DogBreedScreen(
+    breeds: Map<String, List<String>>?,
+    isLoading: Boolean,
+    onBreedClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (isLoading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator() // Show loading indicator
         } else {
-            breedList?.let { breeds ->
+            breeds?.let { breeds ->
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
                         .padding(bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(breeds.breeds.keys.toList()) { breed ->
-                        BreedItem(breed = breed, onClick = { viewModel.fetchRandomImageByBreed(breed) })
+                    items(breeds.keys.toList()) { breed ->
+                        BreedItem(
+                            breed = breed,
+                            onClick = { onBreedClick(breed) }) // Display breed items
                     }
                 }
             }
