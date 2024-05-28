@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+// Composable function to display the dog breed screen
 @Composable
 fun DogBreedScreen(
     breeds: Map<String, List<String>>?,
@@ -26,7 +27,7 @@ fun DogBreedScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (isLoading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator() // Show loading indicator
         } else {
             breeds?.let { breeds ->
                 LazyColumn(
@@ -38,7 +39,7 @@ fun DogBreedScreen(
                     items(breeds.keys.toList()) { breed ->
                         BreedItem(
                             breed = breed,
-                            onClick = { onBreedClick(breed) })
+                            onClick = { onBreedClick(breed) }) // Display breed items
                     }
                 }
             }

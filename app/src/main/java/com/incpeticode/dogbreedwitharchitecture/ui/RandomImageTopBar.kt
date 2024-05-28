@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.incpeticode.dogbreedwitharchitecture.ui.presenter.DogPresenter
 
+// Composable function to display the top bar with random image
 @Composable
 fun RandomImageTopBar(imageUrl: String) {
     Card(

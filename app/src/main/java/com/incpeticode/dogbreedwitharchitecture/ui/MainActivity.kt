@@ -54,8 +54,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.migration.CustomInjection.inject
 import javax.inject.Inject
 
+// MainActivity implementing DogView interface
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(),DogView {
+class MainActivity : ComponentActivity(), DogView {
 
     @Inject
     lateinit var presenter: DogPresenter
@@ -65,41 +66,41 @@ class MainActivity : ComponentActivity(),DogView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        presenter.attachView(this)
+        enableEdgeToEdge() // Enable edge-to-edge display
+        presenter.attachView(this) // Attach the view to the presenter
         setContent {
             DogBreedWithArchitectureTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { RandomImageTopBar(randomImage.value) },
+                    topBar = { RandomImageTopBar(randomImage.value) }, // Display top bar with random image
                     content = { innerPadding ->
                         DogBreedScreen(
                             breedList.value,
                             isLoading.value,
-                            { presenter.fetchRandomImageByBreed(it) },
+                            { presenter.fetchRandomImageByBreed(it) }, // Handle breed item click
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
                 )
             }
         }
-        presenter.fetchAllBreeds()  // Call fetchAllBreeds only once here
+        presenter.fetchAllBreeds()  // Fetch all breeds when activity is created
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.detachView()
+        presenter.detachView() // Detach the view to avoid memory leaks
     }
 
     override fun showBreeds(breeds: Map<String, List<String>>) {
-        breedList.value = breeds
+        breedList.value = breeds // Update breed list
     }
 
     override fun showRandomImage(imageUrl: String) {
-        randomImage.value = imageUrl
+        randomImage.value = imageUrl // Update random image
     }
 
     override fun setLoading(isLoading: Boolean) {
-        this.isLoading.value = isLoading
+        this.isLoading.value = isLoading // Show or hide loading indicator
     }
 }

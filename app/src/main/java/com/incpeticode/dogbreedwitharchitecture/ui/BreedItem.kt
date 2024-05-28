@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Composable function to display a breed item in the list
 @Composable
 fun BreedItem(breed: String, onClick: () -> Unit) {
     Text(
@@ -19,6 +20,6 @@ fun BreedItem(breed: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick) // Handle click on breed item
     )
 }
