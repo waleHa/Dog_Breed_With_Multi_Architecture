@@ -1,4 +1,4 @@
-package com.incpeticode.dogbreedwitharchitecture.ui
+package com.incpeticode.dogbreedwitharchitecture.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,11 +18,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.incpeticode.dogbreedwitharchitecture.domain.model.DogImageModel
+import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogViewModel
+import com.incpeticode.dogbreedwitharchitecture.ui.viewmodel.DogViewState
 
 @Composable
-fun RandomImageTopBar(viewModel: DogViewModel = hiltViewModel()) {
-    val randomImage by viewModel.randomImage.collectAsState()
-
+fun RandomImageTopBar(randomImage: DogImageModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
